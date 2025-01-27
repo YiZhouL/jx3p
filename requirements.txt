@@ -1,0 +1,4 @@
+pydantic
+apscheduler
+pynput
+loguru
