@@ -42,6 +42,6 @@ class DDPresser:
 
     def press(self, code: str):
         self._DD_key(_usercode2ddcode[code], 1)
-        time.sleep(0.005)
+        time.sleep(0.002)
         self._DD_key(_usercode2ddcode[code], 2)
-        time.sleep(0.005)
+        time.sleep(0.002)

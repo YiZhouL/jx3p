@@ -58,26 +58,27 @@ class MicroPresser(MultiKbListener):
             self._is_running = True
             max_secs = 300
             s = 0
-            last, next_ = "", key
+            item = self._cfg.data[key]
+            last, next_ = "", item[1]
             now = datetime.datetime.now()
 
-            self._sche.add_job(
+            j = self._sche.add_job(
                 self._press,
                 "date",
                 run_date=now, args=(last, next_,)
             )
+            logger.info(f"添加任务 {last}, {next_}, {j}")
 
-            item = self._cfg.data[next_]
-            next_, last = item[3], next_
             s += item[2]
-            while s < max_secs and next_:
-                item = self._cfg.data[next_]
-                next_, last = item[3], next_
-                self._sche.add_job(
+            while s < max_secs and item[3]:
+                item = self._cfg.data[item[3]]
+                next_, last = item[1], next_
+                j = self._sche.add_job(
                     self._press,
                     "date",
                     run_date=now + datetime.timedelta(seconds=s), args=(last, next_, )
                 )
+                logger.info(f"添加任务 {last}, {next_}, {j}")
                 s += item[2]
 
     def _press(self, last, next_):
